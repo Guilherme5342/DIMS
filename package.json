@@ -4,7 +4,17 @@
 	"author": "uIoT",
 	"description": "Modulo DIMS do Middleware uIoT",
 	"scripts": {
-		"dev": "nodemon -L --exec ts-node src/server.ts --watch src"
+        "dev": "nodemon -L --exec ts-node src/server.ts --watch src",
+        "dev:no-watch": "ts-node src/server.ts",
+        "build": "rimraf dist && tsc",
+        "start": "node dist/server.js",
+        "db:push": "drizzle-kit push",
+        "db:generate": "drizzle-kit generate",
+        "db:generate:custom": "drizzle-kit generate --custom",
+        "db:migrate": "drizzle-kit migrate",
+        "db:deleteMigrations": "drizzle-kit drop",
+        "db:studio": "drizzle-kit studio --host 127.0.0.1",
+        "db:seed": "ts-node src/db/seed.ts"
 	},
 	"dependencies": {
 		"@fastify/cors": "^11.0.1",

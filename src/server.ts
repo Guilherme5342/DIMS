@@ -5,6 +5,8 @@ import swaggerUi from "@fastify/swagger-ui";
 import fastify from "fastify";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import ENV from "./env";
+import dataRouter from "./routes/data.routes";
+import haInstancesRouter from "./routes/haInstances.routes";
 import organizationsRouter from "./routes/organizations.routes";
 
 const app = fastify({
@@ -51,7 +53,9 @@ if (!ENV.isProd) {
 }
 
 // Routers
+app.register(dataRouter, { prefix: "/data" });
 app.register(organizationsRouter, { prefix: "/organizations" });
+app.register(haInstancesRouter, { prefix: "/ha" });
 
 app.listen({ port: ENV.PORT }, (err, address) => {
 	if (err) {

@@ -1,5 +1,15 @@
 import { sql } from "drizzle-orm";
-import { boolean, index, macaddr, pgTable, text, timestamp, unique, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+    boolean,
+    index,
+    macaddr,
+    pgTable,
+    text,
+    timestamp,
+    unique,
+    uuid,
+    varchar,
+} from "drizzle-orm/pg-core";
 
 export const organizationsTable = pgTable(
 	"organizations",
@@ -11,10 +21,11 @@ export const organizationsTable = pgTable(
 		email: varchar("email", { length: 255 }).notNull(),
 		description: text("description"),
 		orgName: text("org_name").notNull(),
-		bucket: text("bucket").notNull(),
-		isActive: boolean("is_active").default(true),
-		createdAt: timestamp("created_at").defaultNow(),
+		bucketName: text("bucket").notNull(),
+		isActive: boolean("is_active").notNull().default(true),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at")
+			.notNull()
 			.defaultNow()
 			.$onUpdate(() => sql`now()`),
 		deletedAt: timestamp("deleted_at"),
@@ -30,7 +41,10 @@ export const hacsInstancesTable = pgTable(
 			.default(sql`gen_random_uuid()`),
 		organizationId: uuid("organization_id")
 			.notNull()
-			.references(() => organizationsTable.id, { onDelete: "cascade", onUpdate: "cascade" }),
+			.references(() => organizationsTable.id, {
+				onDelete: "cascade",
+				onUpdate: "cascade",
+			}),
 		name: varchar("name", { length: 255 }).notNull(),
 		macaddress: macaddr("macaddress").notNull(),
 		isActive: boolean("is_active").default(true),
@@ -42,6 +56,9 @@ export const hacsInstancesTable = pgTable(
 	},
 	(table) => [
 		index("ha_instances_name_index").on(table.name),
-		unique("ha_instances_organization_id_name_key").on(table.organizationId, table.name),
+		unique("ha_instances_organization_id_name_key").on(
+			table.organizationId,
+			table.name
+		),
 	]
 );

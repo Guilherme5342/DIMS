@@ -36,7 +36,7 @@ export const newOrganization = createInsertSchema(organizationsTable, {
 })
 	.omit({
 		id: true,
-		bucket: true,
+		bucketName: true,
 		orgName: true,
 		createdAt: true,
 		updatedAt: true,

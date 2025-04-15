@@ -1,90 +1,63 @@
 services:
-    influx:
-        container_name: dims-influx
-        image: influxdb:2
-        environment:
-            DOCKER_INFLUXDB_INIT_MODE: setup
-            DOCKER_INFLUXDB_INIT_USERNAME_FILE: /run/secrets/influxdb2-admin-username
-            DOCKER_INFLUXDB_INIT_PASSWORD_FILE: /run/secrets/influxdb2-admin-password
-            DOCKER_INFLUXDB_INIT_ADMIN_TOKEN_FILE: /run/secrets/influxdb2-admin-token
-            DOCKER_INFLUXDB_INIT_ORG: uiot
-            DOCKER_INFLUXDB_INIT_BUCKET: home
-        secrets:
-            - influxdb2-admin-username
-            - influxdb2-admin-password
-            - influxdb2-admin-token
-        volumes:
-            - type: volume
-              source: dims-influx-data
-              target: /var/lib/influxdb2
-            - type: volume
-              source: dims-influx-config
-              target: /etc/influxdb2
-        ports:
-            - ${INFLUX_PORT}:8086
-        networks:
-            - backend
-        restart: unless-stopped
     postgres:
         container_name: dims-postgres
         image: postgis/postgis:17-3.5
         environment:
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-            POSTGRES_DB: dims
-            PGDATA: /var/lib/postgresql/data/pgdata
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_SCHEMA}
         volumes:
-            - dims-postgres:/var/lib/postgresql/data
+            - postgres:/var/lib/postgresql/data
         ports:
-            - ${DB_PORT}:5432
+            - ${POSTGRES_PORT}:5432
         networks:
-            - backend
-        restart: unless-stopped
+            - dims
+        restart: on-failure:10
     api:
         container_name: dims-api
         build:
             dockerfile: Dockerfile.api
-            target: ${NODE_ENV}
+            target: development
         volumes:
             - .:/app
         environment:
-            DATABASE_URL: "postgres://${DB_USER}:${DB_PASSWORD}@db:5432/dims"
+            DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_SCHEMA}"
         ports:
             - ${PORT}:${PORT}
         depends_on:
             - postgres
             - influx
         networks:
-            - backend
-        restart: unless-stopped
-secrets:
-    influxdb2-admin-username:
-        file: ~/.env.influxdb2-admin-username
-    influxdb2-admin-password:
-        file: ~/.env.influxdb2-admin-password
-    influxdb2-admin-token:
-        file: ~/.env.influxdb2-admin-token
+            - dims
+        restart: on-failure:10
+    influx:
+        container_name: dims-influx
+        image: influxdb:2
+        environment:
+            DOCKER_INFLUXDB_INIT_MODE: setup
+            DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USER}
+            DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
+            DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN}
+            DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG}
+            DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BUCKET}
+        volumes:
+            - type: volume
+              source: influx-data
+              target: /var/lib/influxdb2
+            - type: volume
+              source: influx-config
+              target: /etc/influxdb2
+        ports:
+            - ${INFLUXDB_PORT}:8086
+        networks:
+            - dims
+        restart: on-failure:10
 volumes:
-    dims-influx-data:
-        driver: local
-        driver_opts:
-            type: none
-            device: ${INFLUX_DATA}
-            o: bind
-    dims-influx-config:
-        driver: local
-        driver_opts:
-            type: none
-            device: ${INFLUX_CONFIG}
-            o: bind
-    dims-postgres:
-        driver: local
-        driver_opts:
-            type: none
-            device: ${POSTGRES_DATA}
-            o: bind
+    postgres:
+    influx-data:
+    influx-config:
 networks:
-    backend:
+    dims:
         driver: bridge
         driver_opts:
             com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
