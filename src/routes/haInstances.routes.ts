@@ -1,25 +1,16 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyInstance } from "fastify";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
+import { HA_INSTANCE_TAG } from "../constants/swagger";
 import OrganizationsController from "../controllers/organizations.controller";
 import { haInstanceId } from "../schemas/haInstances.schema";
 
-const haInstancesRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
-	// fastify.post(
-	//     "/",
-	//     {
-	//         schema: {
-	//             tags: ["organizations"],
-	//             description: "Criar uma nova organização",
-	//             summary: "Criar uma nova organização",
-	//             body:
-	//         },
-	//     },
+const haInstancesRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstance) => {
 	fastify.get(
 		"/:id",
 		{
 			schema: {
-				tags: ["ha_instances"],
+				tags: [HA_INSTANCE_TAG],
 				description: "Pegar uma instância HA por ID",
 				summary: "Pegar uma instância HA por ID",
 				params: z.object({ id: haInstanceId }),
@@ -27,18 +18,6 @@ const haInstancesRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstance
 		},
 		OrganizationsController.getOrganization
 	);
-
-	// fastify.get(
-	// 	"/search",
-	// 	{
-	// 		schema: {
-	// 			tags: ["organizations"],
-	// 			description: "Pegar todas as organizações",
-	// 			summary: "Pegar todas as organizações",
-	// 		},
-	// 	},
-	// 	OrganizationsController.getAllOrganizations
-	// );
 };
 
 export default haInstancesRouter;

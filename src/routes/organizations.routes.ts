@@ -1,16 +1,20 @@
-import { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyInstance } from "fastify";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { z } from "zod";
+import { ORGANIZATIONS_TAG } from "../constants/swagger";
 import OrganizationsController from "../controllers/organizations.controller";
-import { newOrganization, organizationId } from "../schemas/organizations.schemas";
+import {
+    newOrganization,
+    orgIdParam,
+    searchOrgParams,
+    updateOrganization,
+} from "../schemas/organizations.schemas";
 
-const organizationsRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
+const organizationsRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstance) => {
 	fastify.post(
 		"/",
 		{
 			schema: {
-				tags: ["organizations"],
-				description: "Criar uma nova organização",
+				tags: [ORGANIZATIONS_TAG],
 				summary: "Criar uma nova organização",
 				body: newOrganization,
 			},
@@ -21,26 +25,47 @@ const organizationsRouter: FastifyPluginAsyncZod = async (fastify: FastifyInstan
 		"/:id",
 		{
 			schema: {
-				tags: ["organizations"],
-				description: "Pegar uma organização por ID",
-				summary: "Pegar uma organização por ID",
-				params: z.object({ id: organizationId }),
+				tags: [ORGANIZATIONS_TAG],
+				summary: "Consultar uma organização por ID",
+				params: orgIdParam,
 			},
 		},
 		OrganizationsController.getOrganization
 	);
-
-	// fastify.get(
-	// 	"/search",
-	// 	{
-	// 		schema: {
-	// 			tags: ["organizations"],
-	// 			description: "Pegar todas as organizações",
-	// 			summary: "Pegar todas as organizações",
-	// 		},
-	// 	},
-	// 	OrganizationsController.getAllOrganizations
-	// );
+	fastify.patch(
+		"/:id",
+		{
+			schema: {
+				tags: [ORGANIZATIONS_TAG],
+				summary: "Atualizar uma organização por ID",
+				params: orgIdParam,
+				body: updateOrganization,
+			},
+		},
+		OrganizationsController.updateOrganization
+	);
+	fastify.delete(
+		"/:id",
+		{
+			schema: {
+				tags: [ORGANIZATIONS_TAG],
+				summary: "Deletar uma organização por ID",
+				params: orgIdParam,
+			},
+		},
+		OrganizationsController.deleteOrganization
+	);
+	fastify.get(
+		"/search",
+		{
+			schema: {
+				tags: [ORGANIZATIONS_TAG],
+				summary: "Procurar organizações",
+                querystring: searchOrgParams
+			},
+		},
+		OrganizationsController.searchOrganizations
+	);
 };
 
 export default organizationsRouter;

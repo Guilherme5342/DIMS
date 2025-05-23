@@ -26,6 +26,9 @@ importers:
       '@influxdata/influxdb-client-apis':
         specifier: ^1.35.0
         version: 1.35.0(@influxdata/influxdb-client@1.35.0)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       dotenv-safe:
         specifier: ^9.1.0
         version: 9.1.0(dotenv@16.4.7)
@@ -44,6 +47,9 @@ importers:
       fastify-type-provider-zod:
         specifier: ^4.0.2
         version: 4.0.2(fastify@5.2.2)(zod@3.24.2)
+      http-errors:
+        specifier: ^2.0.0
+        version: 2.0.0
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
@@ -57,6 +63,9 @@ importers:
       '@types/dotenv-safe':
         specifier: ^8.1.6
         version: 8.1.6
+      '@types/http-errors':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@types/morgan':
         specifier: ^1.9.9
         version: 1.9.9
@@ -559,6 +568,9 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
+  '@types/http-errors@2.0.4':
+    resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -797,6 +809,9 @@ packages:
   data-view-byte-offset@1.0.1:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
@@ -2481,6 +2496,8 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
+  '@types/http-errors@2.0.4': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
@@ -2780,6 +2797,8 @@ snapshots:
       call-bound: 1.0.4
       es-errors: 1.3.0
       is-data-view: 1.0.2
+
+  date-fns@4.1.0: {}
 
   debug@3.2.7:
     dependencies:

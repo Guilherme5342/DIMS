@@ -1,16 +1,23 @@
 import { InfluxDB } from "@influxdata/influxdb-client";
+import { BucketsAPI, OrgsAPI, SetupAPI } from "@influxdata/influxdb-client-apis";
 import ENV from "../env";
 
 const influx = new InfluxDB({ url: ENV.INFLUX_URL, token: ENV.INFLUX_TOKEN });
 
-export const InfluxWriteClient = (org: string, bucket: string) => {
+export const whiteClient = (org: string, bucket: string) => {
 	const writeClient = influx.getWriteApi(org, bucket);
 
 	return writeClient;
 };
 
-export const InfluxQueryClient = (org: string, bucket: string) => {
+export const queryClient = (org: string, bucket: string) => {
 	const queryClient = influx.getQueryApi(org);
 
 	return queryClient;
+};
+
+export const adminClient = {
+	setup: new SetupAPI(influx),
+	buckets: new BucketsAPI(influx),
+	orgs: new OrgsAPI(influx),
 };

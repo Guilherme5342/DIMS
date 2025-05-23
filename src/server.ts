@@ -3,8 +3,14 @@ import helmet from "@fastify/helmet";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import fastify from "fastify";
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
+import {
+    jsonSchemaTransform,
+    serializerCompiler,
+    validatorCompiler,
+} from "fastify-type-provider-zod";
+import { DATA_TAG, HA_INSTANCE_TAG, ORGANIZATIONS_TAG } from "./constants/swagger";
 import ENV from "./env";
+import errorHandler from "./middlewares/errorHandler";
 import dataRouter from "./routes/data.routes";
 import haInstancesRouter from "./routes/haInstances.routes";
 import organizationsRouter from "./routes/organizations.routes";
@@ -32,14 +38,27 @@ app.register(swagger, {
 			description: "API do DIMS - Middleware uIoT",
 			version: "1.0.0",
 		},
-		tags: [{ name: "organizations", description: "Operações relacionadas a organizações" }],
+		tags: [
+			{
+				name: ORGANIZATIONS_TAG,
+				description: "Operações relacionadas a organizações",
+			},
+			{
+				name: DATA_TAG,
+				description: "Operações relacionadas a dados de sensores",
+			},
+			{
+				name: HA_INSTANCE_TAG,
+				description: "Operações relacionadas a instâncias Home Assistant",
+			},
+		],
 	},
 	transform: jsonSchemaTransform,
 });
 app.register(swaggerUi, {
 	routePrefix: "/docs",
 	uiConfig: {
-		docExpansion: "none",
+		docExpansion: "list",
 	},
 	theme: {
 		title: "DIMS API",
@@ -56,6 +75,8 @@ if (!ENV.isProd) {
 app.register(dataRouter, { prefix: "/data" });
 app.register(organizationsRouter, { prefix: "/organizations" });
 app.register(haInstancesRouter, { prefix: "/ha" });
+
+app.setErrorHandler(errorHandler);
 
 app.listen({ port: ENV.PORT }, (err, address) => {
 	if (err) {

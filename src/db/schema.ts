@@ -21,13 +21,15 @@ export const organizationsTable = pgTable(
 		email: varchar("email", { length: 255 }).notNull(),
 		description: text("description"),
 		orgName: text("org_name").notNull(),
+		orgId: text("org_id").notNull(),
 		bucketName: text("bucket").notNull(),
+		bucketId: text("bucket_id").notNull(),
 		isActive: boolean("is_active").notNull().default(true),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
-		updatedAt: timestamp("updated_at")
+		updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
 			.notNull()
 			.defaultNow()
-			.$onUpdate(() => sql`now()`),
+			.$onUpdate(() => new Date()),
 		deletedAt: timestamp("deleted_at"),
 	},
 	(table) => [index("organizations_name_index").on(table.name)]
@@ -46,12 +48,13 @@ export const hacsInstancesTable = pgTable(
 				onUpdate: "cascade",
 			}),
 		name: varchar("name", { length: 255 }).notNull(),
-		macaddress: macaddr("macaddress").notNull(),
+		macAddress: macaddr("mac_address").notNull(),
 		isActive: boolean("is_active").default(true),
 		createdAt: timestamp("created_at").defaultNow(),
-		updatedAt: timestamp("updated_at")
+		updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+			.notNull()
 			.defaultNow()
-			.$onUpdate(() => sql`now()`),
+			.$onUpdate(() => new Date()),
 		deletedAt: timestamp("deleted_at"),
 	},
 	(table) => [

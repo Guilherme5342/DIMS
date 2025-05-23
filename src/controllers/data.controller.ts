@@ -1,10 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { InfluxWriteClient } from "../db/influxConnection";
+import { whiteClient } from "../db/influxConnection";
 
 class DataController {
 	async registerData(req: FastifyRequest, res: FastifyReply) {
-		const writeClient = InfluxWriteClient("dims", "dims");
+		const writeClient = whiteClient("dims", "dims");
 
 		for (let i = 0; i < 5; i++) {
 			let point = new Point("test")
