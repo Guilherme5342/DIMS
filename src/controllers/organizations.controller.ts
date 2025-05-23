@@ -14,7 +14,7 @@ import {
     NewOrganizationBody,
     SearchOrgParams,
     UpdateOrganizationBody,
-} from "../types/organizations.type";
+} from "../types/organizations.types";
 
 class OrganizationsController {
 	async createOrganization(
@@ -63,8 +63,6 @@ class OrganizationsController {
 
 		const [organization] = await createOrganization({
 			...req.body,
-			createdAt: new Date(),
-			updatedAt: new Date(),
 			orgName,
 			orgId: org.id!,
 			bucketName,

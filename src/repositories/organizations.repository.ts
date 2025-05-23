@@ -5,7 +5,7 @@ import {
     NewOrganization,
     Organization,
     SearchOrgParams,
-} from "../types/organizations.type";
+} from "../types/organizations.types";
 
 export const createOrganization = (newOrg: NewOrganization) =>
 	db.insert(organizationsTable).values(newOrg).returning();

@@ -35,7 +35,7 @@ export const organizationsTable = pgTable(
 	(table) => [index("organizations_name_index").on(table.name)]
 );
 
-export const hacsInstancesTable = pgTable(
+export const haInstancesTable = pgTable(
 	"ha_instances",
 	{
 		id: uuid("id")

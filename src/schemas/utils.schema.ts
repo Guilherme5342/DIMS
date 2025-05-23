@@ -49,3 +49,13 @@ export const paginationSchema = z
 			.default(1),
 	})
 	.strict();
+
+//MAC address schema
+export const macAddressSchema = z
+	.string({
+		required_error: "Endereço MAC é obrigatório",
+		invalid_type_error: "Endereço MAC deve ser uma string",
+	})
+	.regex(/([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/, {
+		message: "Endereço MAC inválido",
+	});
