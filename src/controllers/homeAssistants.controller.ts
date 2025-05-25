@@ -38,7 +38,7 @@ class HaInstancesController {
 
 		const [ha] = await getHaInstanceById(id);
 
-		if (!ha || ha.deletedAt) {
+		if (!ha) {
 			throw createHttpError.NotFound("Instância não encontrada");
 		}
 
@@ -53,7 +53,7 @@ class HaInstancesController {
 
 		const [ha] = await getHaInstanceById(id);
 
-		if (!ha || ha.deletedAt) {
+		if (!ha) {
 			throw createHttpError.NotFound("Instância não encontrada");
 		}
 
@@ -76,7 +76,7 @@ class HaInstancesController {
 
 		const [ha] = await getHaInstanceById(id);
 
-		if (!ha || ha.deletedAt) {
+		if (!ha) {
 			throw createHttpError.NotFound("Instância não encontrada");
 		}
 

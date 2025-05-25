@@ -3,6 +3,18 @@ import { z } from "zod";
 import { organizationId } from "./organizations.schemas";
 import { dateRangeSchema } from "./utils.schema";
 
+export const data = z
+	.object({
+		sensorName: z.string(),
+		value: z.string(),
+		date: z.string(),
+		unit: z.string(),
+		tag: z.string(),
+		raw: z.any(),
+	})
+	.strict()
+	.describe("Leitura do sensor");
+
 export const newData = z
 	.object({
 		raw: z

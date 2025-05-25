@@ -1,4 +1,4 @@
-import { and, asc, between, eq, ilike } from "drizzle-orm";
+import { and, asc, between, eq, getTableColumns, ilike, isNull } from "drizzle-orm";
 import db from "../db/postgresConnection";
 import { haInstancesTable } from "../db/schema";
 import {
@@ -7,25 +7,30 @@ import {
     SearchHaInstancesParams,
 } from "../types/haInstances.types";
 
+const { deletedAt, ...columns } = getTableColumns(haInstancesTable);
+
 export const createHaInstance = (newHaInstance: NewHaInstance) =>
-	db.insert(haInstancesTable).values(newHaInstance).returning();
+	db.insert(haInstancesTable).values(newHaInstance).returning(columns);
 
 export const getHaInstanceById = (id: HaInstance["id"]) =>
-	db.select().from(haInstancesTable).where(eq(haInstancesTable.id, id));
+	db
+		.select(columns)
+		.from(haInstancesTable)
+		.where(and(eq(haInstancesTable.id, id), isNull(haInstancesTable.deletedAt)));
 
 export const updateHaInstance = (id: HaInstance["id"], haInstance: Partial<HaInstance>) =>
 	db
 		.update(haInstancesTable)
 		.set(haInstance)
-		.where(eq(haInstancesTable.id, id))
-		.returning();
+		.where(and(eq(haInstancesTable.id, id), isNull(haInstancesTable.deletedAt)))
+		.returning(columns);
 
 export const softDeleteHaInstance = (id: HaInstance["id"]) =>
 	db
 		.update(haInstancesTable)
 		.set({ deletedAt: new Date() })
 		.where(eq(haInstancesTable.id, id))
-		.returning();
+		.returning(columns);
 
 export const deleteHaInstance = (id: HaInstance["id"]) =>
 	db.delete(haInstancesTable).where(eq(haInstancesTable.id, id)).returning();
@@ -33,6 +38,7 @@ export const deleteHaInstance = (id: HaInstance["id"]) =>
 export const searchHaInstances = async (params: SearchHaInstancesParams) => {
 	const conditions = [];
 
+	conditions.push(isNull(haInstancesTable.deletedAt));
 	params.id && conditions.push(eq(haInstancesTable.id, params.id));
 	params.name && conditions.push(ilike(haInstancesTable.name, `%${params.name}%`));
 	params.macAddress &&

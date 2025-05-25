@@ -1,5 +1,5 @@
 import { isBefore } from "date-fns";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
 import { organizationsTable } from "../db/schema";
 import { paginationSchema } from "./utils.schema";
@@ -13,6 +13,11 @@ export const organizationId = z
 	.uuid({ message: "ID deve ser um UUID válido" });
 
 export const orgIdParam = z.object({ id: organizationId });
+
+export const organization = createSelectSchema(organizationsTable)
+	.omit({ deletedAt: true })
+	.strict()
+	.describe("Organização");
 
 export const newOrganization = createInsertSchema(organizationsTable, {
 	isActive: z.boolean({

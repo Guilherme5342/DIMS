@@ -1,5 +1,5 @@
 import { isBefore } from "date-fns";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
 import { haInstancesTable } from "../db/schema";
 import { organizationId } from "./organizations.schemas";
@@ -12,9 +12,16 @@ export const haInstanceId = z
 		description: "ID da instância do Home Assistant",
 	})
 	.uuid({ message: "ID deve ser um UUID válido" });
+
 export const haInstanceIdParam = z.object({
 	id: haInstanceId,
 });
+
+export const haInstance = createSelectSchema(haInstancesTable)
+	.omit({ deletedAt: true })
+	.strict()
+	.describe("Instância do Home Assistant");
+
 export const newHaInstance = createInsertSchema(haInstancesTable, {
 	name: z
 		.string({

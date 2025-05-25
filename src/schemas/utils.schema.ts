@@ -9,7 +9,7 @@ export const dateRangeSchema = z
 				required_error: "Data inicial é obrigatória",
 				invalid_type_error: "Data inicial deve ser uma string",
 				description: "Data inicial do intervalo, exemplo: '2023-10-01T00:00:00Z'",
-            })
+			})
 			.datetime({ offset: true }),
 		before: z
 			.string({
@@ -76,3 +76,9 @@ export const macAddressSchema = z
 	.regex(/([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/, {
 		message: "Endereço MAC inválido",
 	});
+
+export const paginatedResponseSchema = z.object({
+	total: z.number(),
+	page: z.number(),
+	size: z.number(),
+});

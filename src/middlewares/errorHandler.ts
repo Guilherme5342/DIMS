@@ -33,7 +33,7 @@ export default function errorHandler(
 	}
 
 	if (err instanceof PostgresError) {
-		return reply.code(400).send({
+		return reply.code(501).send({
 			error: "DB_ERROR",
 			message: err.message,
 			statusCode: 500,
