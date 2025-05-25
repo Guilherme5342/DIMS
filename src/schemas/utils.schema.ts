@@ -9,7 +9,7 @@ export const dateRangeSchema = z
 				required_error: "Data inicial é obrigatória",
 				invalid_type_error: "Data inicial deve ser uma string",
 				description: "Data inicial do intervalo, exemplo: '2023-10-01T00:00:00Z'",
-			})
+            })
 			.datetime({ offset: true }),
 		before: z
 			.string({
@@ -20,7 +20,7 @@ export const dateRangeSchema = z
 			.datetime({ offset: true }),
 	})
 	.strict()
-	.refine((range) => isBefore(range.before, range.after), {
+	.refine((range) => isBefore(range.after, range.before), {
 		message: "A data inicial deve ser anterior à data final",
 	});
 // Schema for min and max values

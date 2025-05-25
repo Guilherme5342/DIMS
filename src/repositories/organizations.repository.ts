@@ -63,21 +63,21 @@ export const searchOrganizations = async (params: SearchOrgParams) => {
 		conditions.push(ilike(organizationsTable.description, `%${params.description}%`));
 	params.isActive && conditions.push(eq(organizationsTable.isActive, params.isActive));
 
-	if (params.createdAtRange) {
+	if (params.createdAfter && params.createdBefore) {
 		conditions.push(
 			between(
 				organizationsTable.createdAt,
-				new Date(params.createdAtRange.after),
-				new Date(params.createdAtRange.before)
+				new Date(params.createdAfter),
+				new Date(params.createdBefore)
 			)
 		);
 	}
-	if (params.updatedAtRange) {
+	if (params.updatedAfter && params.updatedBefore) {
 		conditions.push(
 			between(
 				organizationsTable.updatedAt,
-				new Date(params.updatedAtRange.after),
-				new Date(params.updatedAtRange.before)
+				new Date(params.updatedAfter),
+				new Date(params.updatedBefore)
 			)
 		);
 	}

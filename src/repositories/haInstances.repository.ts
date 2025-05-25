@@ -41,21 +41,21 @@ export const searchHaInstances = async (params: SearchHaInstancesParams) => {
 	params.organizationId &&
 		conditions.push(eq(haInstancesTable.organizationId, params.organizationId));
 
-	if (params.createdAtRange) {
+	if (params.createdAfter && params.createdBefore) {
 		conditions.push(
 			between(
 				haInstancesTable.createdAt,
-				new Date(params.createdAtRange.after),
-				new Date(params.createdAtRange.before)
+				new Date(params.createdAfter),
+				new Date(params.createdBefore)
 			)
 		);
 	}
-	if (params.updatedAtRange) {
+	if (params.updatedAfter && params.updatedBefore) {
 		conditions.push(
 			between(
 				haInstancesTable.updatedAt,
-				new Date(params.updatedAtRange.after),
-				new Date(params.updatedAtRange.before)
+				new Date(params.updatedAfter),
+				new Date(params.updatedBefore)
 			)
 		);
 	}
