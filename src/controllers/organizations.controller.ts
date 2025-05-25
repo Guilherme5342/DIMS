@@ -86,7 +86,7 @@ class OrganizationsController {
 
 		const [organization] = await getOrganizationById(id);
 
-		if (!organization || organization.deletedAt) {
+		if (!organization) {
 			throw createHttpError.NotFound("Organização não encontrada");
 		}
 
@@ -104,7 +104,7 @@ class OrganizationsController {
 
 		const [organization] = await getOrganizationById(id);
 
-		if (!organization || organization.deletedAt) {
+		if (!organization) {
 			throw createHttpError.NotFound("Organização não encontrada");
 		}
 
@@ -168,7 +168,7 @@ class OrganizationsController {
 
 		const [organization] = await getOrganizationById(id);
 
-		if (!organization || organization.deletedAt) {
+		if (!organization) {
 			throw createHttpError.NotFound("Organização não encontrada");
 		}
 

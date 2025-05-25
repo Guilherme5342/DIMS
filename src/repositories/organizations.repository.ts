@@ -1,4 +1,4 @@
-import { and, asc, between, eq, ilike, or } from "drizzle-orm";
+import { and, asc, between, eq, getTableColumns, ilike, isNull, or } from "drizzle-orm";
 import db from "../db/postgresConnection";
 import { organizationsTable } from "../db/schema";
 import {
@@ -7,8 +7,10 @@ import {
     SearchOrgParams,
 } from "../types/organizations.types";
 
+const { deletedAt, ...columns } = getTableColumns(organizationsTable);
+
 export const createOrganization = (newOrg: NewOrganization) =>
-	db.insert(organizationsTable).values(newOrg).returning();
+	db.insert(organizationsTable).values(newOrg).returning(columns);
 
 export const updateOrganization = (
 	id: Organization["id"],
@@ -17,28 +19,31 @@ export const updateOrganization = (
 	db
 		.update(organizationsTable)
 		.set(org)
-		.where(eq(organizationsTable.id, id))
-		.returning();
+		.where(and(eq(organizationsTable.id, id), isNull(organizationsTable.deletedAt)))
+		.returning(columns);
 
 export const softDeleteOrganization = (id: Organization["id"]) =>
 	db
 		.update(organizationsTable)
 		.set({ deletedAt: new Date() })
 		.where(eq(organizationsTable.id, id))
-		.returning();
+		.returning(columns);
 
 export const deleteOrganization = (id: Organization["id"]) =>
 	db.delete(organizationsTable).where(eq(organizationsTable.id, id)).returning();
 
 export const getOrganizationById = (id: Organization["id"]) =>
-	db.select().from(organizationsTable).where(eq(organizationsTable.id, id));
+	db
+		.select(columns)
+		.from(organizationsTable)
+		.where(and(eq(organizationsTable.id, id), isNull(organizationsTable.deletedAt)));
 
 export const checkOrgNameAndBucket = (
 	org: Organization["orgName"],
 	bucket: Organization["bucketName"]
 ) =>
 	db
-		.select()
+		.select(columns)
 		.from(organizationsTable)
 		.where(
 			or(
@@ -50,6 +55,7 @@ export const checkOrgNameAndBucket = (
 export const searchOrganizations = async (params: SearchOrgParams) => {
 	const conditions = [];
 
+	conditions.push(isNull(organizationsTable.deletedAt));
 	params.id && conditions.push(eq(organizationsTable.id, params.id));
 	params.name && conditions.push(ilike(organizationsTable.name, `%${params.name}%`));
 	params.email && conditions.push(eq(organizationsTable.email, params.email));
@@ -77,7 +83,7 @@ export const searchOrganizations = async (params: SearchOrgParams) => {
 	}
 
 	const organizations = await db
-		.select()
+		.select(columns)
 		.from(organizationsTable)
 		.where(and(...conditions))
 		.orderBy(asc(organizationsTable.name), asc(organizationsTable.id))
