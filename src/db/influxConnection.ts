@@ -7,7 +7,8 @@ import {
 } from "@influxdata/influxdb-client-apis";
 import ENV from "../env";
 
-const influx = new InfluxDB({ url: ENV.INFLUX_URL, token: ENV.INFLUX_TOKEN });
+const INFLUXDB_URL = `http${ENV.isProd ? "s" : ""}://${ENV.INFLUXDB_HOST}:${ENV.INFLUXDB_PORT}`;
+const influx = new InfluxDB({ url: INFLUXDB_URL, token: ENV.INFLUXDB_TOKEN });
 
 export const whiteClient = (org: string, bucket: string) => {
 	const writeClient = influx.getWriteApi(org, bucket);

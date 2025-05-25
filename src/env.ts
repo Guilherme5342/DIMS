@@ -6,9 +6,14 @@ const ENV = cleanEnv(process.env, {
 	NODE_ENV: str({ choices: ["development", "production", "staging"], default: "development" }),
 	PORT: port({ desc: "Porta utilizada pelo servidor", example: "8080" }),
 	ALLOWED_ORIGINS: str({ desc: "URLs autorizadas para CORS separadas por virgula", example: "https://example.com" }),
-	POSTGRES_URL: url({ desc: "URL do banco de dados Postgres", example: "postgres://user:password@localhost:5432/dbname" }),
-	INFLUX_URL: url({ desc: "URL do banco de dados InfluxDB", example: "http://localhost:8086" }),
-	INFLUX_TOKEN: str({ desc: "Token de autenticação do InfluxDB", example: "my-token" }),
+	POSTGRES_HOST: str({ desc: "Host do banco de dados PostgreSQL", example: "localhost" }),
+    POSTGRES_PORT: port({ desc: "Porta do banco de dados PostgreSQL", example: "5432" }),
+    POSTGRES_USER: str({ desc: "Usuário do banco de dados PostgreSQL", example: "postgres" }),
+    POSTGRES_PASSWORD: str({ desc: "Senha do banco de dados PostgreSQL", example: "password" }),
+    POSTGRES_SCHEMA: str({ desc: "Schema do banco de dados PostgreSQL", example: "public" }),
+    INFLUXDB_HOST: str({ desc: "Host do InfluxDB", example: "localhost" }),
+	INFLUXDB_PORT: port({ desc: "Porta do InfluxDB", example: "8086" }),
+    INFLUXDB_TOKEN: str({ desc: "Token de autenticação do InfluxDB", example: "my-token" }),
 });
 
 export default ENV;
