@@ -1,5 +1,10 @@
 import { InfluxDB } from "@influxdata/influxdb-client";
-import { BucketsAPI, OrgsAPI, SetupAPI } from "@influxdata/influxdb-client-apis";
+import {
+    BucketsAPI,
+    DeleteAPI,
+    OrgsAPI,
+    SetupAPI,
+} from "@influxdata/influxdb-client-apis";
 import ENV from "../env";
 
 const influx = new InfluxDB({ url: ENV.INFLUX_URL, token: ENV.INFLUX_TOKEN });
@@ -10,7 +15,7 @@ export const whiteClient = (org: string, bucket: string) => {
 	return writeClient;
 };
 
-export const queryClient = (org: string, bucket: string) => {
+export const queryClient = (org: string) => {
 	const queryClient = influx.getQueryApi(org);
 
 	return queryClient;
@@ -20,4 +25,5 @@ export const adminClient = {
 	setup: new SetupAPI(influx),
 	buckets: new BucketsAPI(influx),
 	orgs: new OrgsAPI(influx),
+	delete: new DeleteAPI(influx),
 };
