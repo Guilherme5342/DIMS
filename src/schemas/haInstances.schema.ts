@@ -8,6 +8,7 @@ export const haInstanceId = z
 	.string({
 		invalid_type_error: "ID deve ser uma string",
 		required_error: "ID é obrigatório",
+        description: "ID da instância do Home Assistant",
 	})
 	.uuid({ message: "ID deve ser um UUID válido" });
 export const haInstanceIdParam = z.object({
@@ -46,7 +47,7 @@ export const searchHaInstancesParams = z
 			.string({
 				invalid_type_error: "name deve ser uma string",
 				required_error: "name é obrigatório",
-				description: "Nome da instância do Home Assistant",
+				description: "[Parcial] Nome da instância do Home Assistant",
 			})
 			.optional(),
 		macAddress: macAddressSchema.optional(),
