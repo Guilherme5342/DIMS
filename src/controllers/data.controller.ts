@@ -110,8 +110,12 @@ class DataController {
 			queryString += `|> range(start: ${start.toISOString()})\n`;
 		}
 
-		if (searchData.sensorName) {
-			queryString += `|> filter(fn: (r) => r._measurement == "${searchData.sensorName}")\n`;
+		if (searchData.sensorName && searchData.sensorName.length > 0) {
+			const sensorNames = searchData.sensorName
+				.map((s) => `r._measurement == "${s}"`)
+				.join(" or ");
+
+			queryString += `|> filter(fn: (r) => ${sensorNames})\n`;
 		}
 
 		if (searchData.tags && searchData.tags.length > 0) {

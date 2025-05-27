@@ -82,3 +82,6 @@ export const paginatedResponseSchema = z.object({
 	page: z.number(),
 	size: z.number(),
 });
+
+export const queryArray = (schema: z.ZodTypeAny, params?: z.RawCreateParams) =>
+	z.preprocess((t) => (Array.isArray(t) ? t : [t]), z.array(schema, params));

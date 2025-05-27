@@ -1,7 +1,7 @@
 import { isBefore } from "date-fns";
 import { z } from "zod";
 import { organizationId } from "./organizations.schemas";
-import { dateRangeSchema } from "./utils.schema";
+import { dateRangeSchema, queryArray } from "./utils.schema";
 
 export const data = z
 	.object({
@@ -77,23 +77,13 @@ export const deleteData = z
 export const searchData = z
 	.object({
 		orgId: organizationId,
-		sensorName: z
-			.string({
-				invalid_type_error: "Nome do sensor deve ser uma string",
-				description: "Filtrar por nome do sensor",
-			})
-			.optional(),
-		tags: z
-			.preprocess(
-				(t) => (Array.isArray(t) ? t : [t]),
-				z.array(
-					z.string({
-						invalid_type_error: "Tag deve ser uma string",
-					}),
-					{ description: "Filtrar tags especificas" }
-				)
-			)
-			.optional(),
+		sensorName: queryArray(
+			z.string({ invalid_type_error: "Nome do sensor deve ser uma string" }),
+			{ description: "Filtrar por nome do sensor" }
+		).optional(),
+		tags: queryArray(z.string({ invalid_type_error: "Tag deve ser uma string" }), {
+			description: "Filtrar tags especificas",
+		}).optional(),
 		startAfter: z
 			.string({
 				required_error: "Data inicial é obrigatória",
