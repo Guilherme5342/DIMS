@@ -17,9 +17,7 @@ services:
         container_name: dims-api
         build:
             dockerfile: Dockerfile.api
-            target: development
-        volumes:
-            - .:/app
+            target: production
         ports:
             - ${PORT}:${PORT}
         depends_on:

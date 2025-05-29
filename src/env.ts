@@ -1,5 +1,5 @@
 import dotenv from "dotenv-safe";
-import { cleanEnv, port, str, url } from "envalid";
+import { cleanEnv, port, str } from "envalid";
 dotenv.config();
 
 const ENV = cleanEnv(process.env, {
