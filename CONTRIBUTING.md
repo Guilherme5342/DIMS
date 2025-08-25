@@ -1,6 +1,6 @@
 # Desenvolvendo para o DIMS - Módulo de Ingestão e Gerenciamento de Dados uIoT
 
-## 1. Estrutura dos arquivos e componentes do código
+## Estrutura dos arquivos e componentes do código
 
 O projeto segue uma estrutura modular para facilitar a organização e manutenção do código:
 
