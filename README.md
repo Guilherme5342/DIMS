@@ -40,10 +40,10 @@ O projeto segue uma estrutura modular para facilitar a organização e manutenç
 │   ├── constants/             # Constantes da aplicação (ex: configurações do Swagger)
 │   ├── controllers/           # Controladores (lógica de requisição/resposta HTTP)
 │   ├── db/                    # Módulos de conexão e schemas de banco de dados
-│   │   ├── influxConnection.ts  # Conexão com InfluxDB
-│   │   ├── postgresConnection.ts# Conexão com PostgreSQL
-│   │   ├── schema.ts            # Schemas do Drizzle ORM para PostgreSQL
-│   │   └── migrations/          # Arquivos de migração do Drizzle ORM
+│   │   ├── influxConnection.ts   # Conexão com InfluxDB
+│   │   ├── postgresConnection.ts # Conexão com PostgreSQL
+│   │   ├── schema.ts             # Schemas do Drizzle ORM para PostgreSQL
+│   │   └── migrations/           # Arquivos de migração do Drizzle ORM
 │   ├── env.ts                 # Validação e carregamento de variáveis de ambiente
 │   ├── middlewares/           # Middlewares da aplicação (ex: tratamento de erros)
 │   ├── repositories/          # Lógica de acesso e manipulação de dados nos bancos

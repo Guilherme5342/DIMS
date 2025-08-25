@@ -14,10 +14,10 @@ O projeto segue uma estrutura modular para facilitar a organização e manutenç
 │   ├── constants/             # Constantes da aplicação (ex: configurações do Swagger)
 │   ├── controllers/           # Controladores (lógica de requisição/resposta HTTP)
 │   ├── db/                    # Módulos de conexão e schemas de banco de dados
-│   │   ├── influxConnection.ts  # Conexão com InfluxDB
-│   │   ├── postgresConnection.ts# Conexão com PostgreSQL
-│   │   ├── schema.ts            # Schemas do Drizzle ORM para PostgreSQL
-│   │   └── migrations/          # Arquivos de migração do Drizzle ORM
+│   │   ├── influxConnection.ts   # Conexão com InfluxDB
+│   │   ├── postgresConnection.ts # Conexão com PostgreSQL
+│   │   ├── schema.ts             # Schemas do Drizzle ORM para PostgreSQL
+│   │   └── migrations/           # Arquivos de migração do Drizzle ORM
 │   ├── env.ts                 # Validação e carregamento de variáveis de ambiente
 │   ├── middlewares/           # Middlewares da aplicação (ex: tratamento de erros)
 │   ├── repositories/          # Lógica de acesso e manipulação de dados nos bancos
@@ -37,31 +37,7 @@ O projeto segue uma estrutura modular para facilitar a organização e manutenç
 * **Validação (Zod):** Utilizado para validar schemas de dados nas requisições e facilitar gestão do swagger da aplicação.
 * **Docker:** Para conteinerização e orquestração dos serviços da aplicação.
 
-## 2. Como rodar
-
-Para rodar a aplicação em ambiente de produção ou similar, siga os passos abaixo:
-
-1. **Clone o repositório**
-
-2. **Configurar `.env`:**
-
-   A partir do `.env.example` crie um arquiv `.env` e preencha as variáveis de ambiente necessárias
-
-   Edite o arquivo `.env` com os valores corretos para as variáveis de ambiente, como portas, credenciais de banco de dados, etc.
-
-3. **Suba os containers Docker:**
-
-   ```bash
-   docker-compose up -d
-   ```
-
-   Este comando irá construir a imagem da API (se ainda não existir) e iniciar os containers do PostgreSQL, InfluxDB e da API em background (`-d`).
-
-4. **Acessar a API:**
-
-   A API estará disponível na porta configurada na variável `PORT` do seu arquivo `.env` (por exemplo, `http://localhost:8080`).
-
-## 3. Como desenvolver
+## Como desenvolver
 
 Para configurar o ambiente de desenvolvimento:
 
@@ -116,7 +92,7 @@ Para configurar o ambiente de desenvolvimento:
     * `db:studio`: Abre o Drizzle Studio para visualizar e interagir com o banco de dados PostgreSQL.
     * `db:seed`: Executa o script de seeding do banco de dados (se configurado).
 
-## 4. Guias das tecnologias utilizadas
+## Guias das tecnologias utilizadas
 
 Aqui estão alguns links úteis para as principais tecnologias utilizadas no projeto:
 
